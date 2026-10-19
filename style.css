@@ -5,75 +5,420 @@
 body {
     margin: 0;
     min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 24px;
-    background: #10131a;
-    color: #f5f7fb;
-    font-family: Arial, sans-serif;
+    background: #030307;
+    color: #f5f5f7;
+    font-family: -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", sans-serif;
 }
 
-.card {
-    width: min(100%, 560px);
-    padding: 36px;
-    border: 1px solid #303746;
-    border-radius: 20px;
-    background: #191e29;
-    box-shadow: 0 24px 70px #0005;
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 50%,
+            rgba(17, 19, 39, 0.32) 0%,
+            transparent 55%
+        ),
+        #030307;
 }
 
-.eyebrow {
-    color: #91a8ff;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
+/* Blue-purple vignette */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at 0% 50%,
+            rgba(25, 55, 150, 0.12),
+            transparent 45%
+        ),
+        radial-gradient(
+            ellipse at 100% 45%,
+            rgba(75, 30, 130, 0.10),
+            transparent 45%
+        ),
+        radial-gradient(
+            ellipse at 50% 100%,
+            rgba(20, 35, 100, 0.07),
+            transparent 45%
+        );
+
+    filter: blur(70px);
+    animation: vignette-pulse 12s ease-in-out infinite alternate;
 }
 
-h1 {
-    margin: 12px 0;
-    font-size: clamp(32px, 7vw, 48px);
+/* Ambient blue and purple lights */
+.ambient {
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: -1;
+    will-change: transform, opacity;
 }
 
-.intro, .hint {
-    color: #b6bece;
-    line-height: 1.6;
+.ambient-one {
+    background: #254fff;
+
+    animation:
+        float-blue 20s ease-in-out infinite alternate,
+        glow-blue 8s ease-in-out infinite;
 }
 
-button {
-    margin: 14px 0;
-    padding: 13px 18px;
-    border: 0;
-    border-radius: 10px;
-    background: #91a8ff;
-    color: #111827;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
+.ambient-two {
+    width: 300px;
+    height: 300px;
+    background: #852cff;
+
+    animation:
+        float-purple 24s ease-in-out infinite alternate,
+        glow-purple 9s ease-in-out infinite;
 }
 
-button:hover {
-    background: #b0bfff;
+.ambient-three {
+    width: 200px;
+    height: 200px;
+    background: #246dff;
+    filter: blur(110px);
+    opacity: 0.10;
+
+    animation: float-small 18s ease-in-out infinite alternate;
 }
 
-.result {
-    min-height: 90px;
-    padding: 16px;
-    border: 1px solid #394254;
-    border-radius: 12px;
-    background: #111620;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
+/* Ambient motion */
+@keyframes float-blue {
+    0% {
+        transform: translate(-180px, -100px) scale(0.85);
+    }
+
+    50% {
+        transform: translate(140px, 100px) scale(1.15);
+    }
+
+    100% {
+        transform: translate(-20px, 180px) scale(0.95);
+    }
 }
 
-.result.success {
-    border-color: #3ca878;
+@keyframes float-purple {
+    0% {
+        transform: translate(180px, 130px) scale(0.9);
+    }
+
+    50% {
+        transform: translate(-140px, -100px) scale(1.2);
+    }
+
+    100% {
+        transform: translate(100px, -150px) scale(0.85);
+    }
 }
 
-.result.error {
-    border-color: #d56b6b;
+@keyframes float-small {
+    from {
+        transform: translate(100px, -150px);
+    }
+
+    to {
+        transform: translate(-120px, 100px);
+    }
 }
 
-.hint {
-    margin-top: 20px;
-    font-size: 12px;
+/* Gentle glow */
+@keyframes glow-blue {
+    0%, 100% {
+        opacity: 0.12;
+    }
+
+    50% {
+        opacity: 0.22;
+    }
 }
+
+@keyframes glow-purple {
+    0%, 100% {
+        opacity: 0.10;
+    }
+
+    50% {
+        opacity: 0.18;
+    }
+}
+
+@keyframes vignette-pulse {
+    from {
+        opacity: 0.65;
+    }
+
+    to {
+        opacity: 0.9;
+    }
+}
+
+/* Minimal typography */
+.hello {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    letter-spacing: -0.075em;
+    cursor: default;
+
+    transition:
+        transform 500ms ease,
+        text-shadow 500ms ease;
+}
+
+.hello span {
+    color: #8eaaff;
+    transition: color 500ms ease;
+}
+
+.hello:hover {
+    transform: translateY(-3px);
+
+    text-shadow:
+        0 0 20px rgba(180, 195, 255, 0.22),
+        0 0 45px rgba(85, 110, 255, 0.18);
+}
+
+.hello:hover span {
+    color: #c5a5ff;
+}
+
+/* Large, soft floating hearts */
+.hearts-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+.heart {
+    position: absolute;
+    width: 48vw;
+    height: 48vw;
+    max-width: 620px;
+    max-height: 620px;
+    min-width: 300px;
+    min-height: 300px;
+
+    opacity: 0;
+    transform-origin: center;
+    will-change: transform, opacity;
+
+    animation:
+        heart-float 7s ease-in-out forwards,
+        heart-drift 9s ease-in-out infinite,
+        heart-glow 4s ease-in-out infinite alternate;
+}
+
+.heart svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    fill: rgba(255, 15, 60, 0.65);
+    stroke: none;
+
+    filter:
+        blur(35px)
+        drop-shadow(0 0 35px rgba(255, 0, 45, 0.35))
+        drop-shadow(0 0 75px rgba(255, 0, 45, 0.25));
+}
+
+/* Muncul dan memudar lebih cepat */
+@keyframes heart-float {
+    0% {
+        opacity: 0;
+        transform: scale(0.75) rotate(-12deg);
+    }
+
+    18% {
+        opacity: 0.8;
+    }
+
+    45% {
+        opacity: 0.7;
+        transform: scale(0.95) rotate(8deg);
+    }
+
+    68% {
+        opacity: 0.65;
+        transform: scale(1.05) rotate(-8deg);
+    }
+
+    82% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.15) rotate(15deg);
+    }
+}
+
+/* Melayang dan berputar seperti di angkasa */
+@keyframes heart-drift {
+    0% {
+        margin-top: 0;
+        margin-left: 0;
+        rotate: -8deg;
+    }
+
+    25% {
+        margin-top: -22px;
+        margin-left: 14px;
+        rotate: 5deg;
+    }
+
+    50% {
+        margin-top: 8px;
+        margin-left: -12px;
+        rotate: 12deg;
+    }
+
+    75% {
+        margin-top: -16px;
+        margin-left: 8px;
+        rotate: -5deg;
+    }
+
+    100% {
+        margin-top: 0;
+        margin-left: 0;
+        rotate: -8deg;
+    }
+}
+
+/* Cahaya bernapas perlahan */
+@keyframes heart-glow {
+    from {
+        filter: brightness(0.85);
+    }
+
+    to {
+        filter: brightness(1.3);
+    }
+}
+
+
+/* Tiny white stars */
+.stars-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.star {
+    position: absolute;
+    width: var(--star-size);
+    height: var(--star-size);
+    background: #fffafc;
+    border-radius: 50%;
+
+    opacity: 0;
+    box-shadow:
+        0 0 5px rgba(255, 255, 255, 0.9),
+        0 0 12px rgba(255, 220, 235, 0.55);
+
+    animation: star-twinkle var(--star-duration) ease-in-out infinite;
+    animation-delay: var(--star-delay);
+}
+
+/* Four-point sparkle */
+.star.sparkle {
+    width: calc(var(--star-size) * 1.8);
+    height: calc(var(--star-size) * 1.8);
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.star.sparkle::before,
+.star.sparkle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: #fffdfd;
+    transform: translate(-50%, -50%);
+    border-radius: 100%;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+
+.star.sparkle::before {
+    width: 25%;
+    height: 100%;
+    clip-path: polygon(
+        50% 0%, 65% 38%, 100% 50%,
+        65% 62%, 50% 100%, 35% 62%,
+        0% 50%, 35% 38%
+    );
+}
+
+.star.sparkle::after {
+    width: 100%;
+    height: 25%;
+    clip-path: polygon(
+        50% 0%, 65% 38%, 100% 50%,
+        65% 62%, 50% 100%, 35% 62%,
+        0% 50%, 35% 38%
+    );
+}
+
+@keyframes star-twinkle {
+    0%, 100% {
+        opacity: 0.12;
+        transform: scale(0.65) rotate(0deg);
+    }
+
+    50% {
+        opacity: 0.95;
+        transform: scale(1.15) rotate(35deg);
+    }
+}
+
+.orbit-system {
+    width: 280px;
+    height: 130px;
+}
+
+.orbit-ring {
+    border: 2px solid rgba(145, 170, 255, 0.95);
+    box-shadow:
+        0 0 8px rgba(110, 145, 255, 0.45),
+        0 0 18px rgba(110, 145, 255, 0.2);
+}
+
+.orbit-ring-two {
+    inset: 10px -10px;
+    border-width: 1.5px;
+    border-color: rgba(195, 160, 255, 0.85);
+}
+
+@media (max-width: 600px) {
+    .orbit-system {
+        width: 230px;
+        height: 110px;
+    }
+}
+
