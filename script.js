@@ -729,3 +729,46 @@ if (cake) {
   // Start once the browser has rendered the page.
   requestAnimationFrame(startOpening);
 })();
+
+
+/* SLOW AUTO SCROLL: COUNTDOWN -> SCENE 2 */
+(() => {
+  const story = document.querySelector("#story");
+  const countdown = document.querySelector(".countdown-scene");
+
+  if (!story || !countdown) return;
+
+  window.setTimeout(() => {
+    const targetY =
+      story.getBoundingClientRect().top +
+      window.scrollY +
+      window.innerHeight;
+
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const duration = 2500;
+    const startTime = performance.now();
+
+    function animateScroll(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Ease-in-out: mulai dan berhenti secara perlahan
+      const easedProgress =
+        progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      window.scrollTo(
+        0,
+        startY + distance * easedProgress
+      );
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    }
+
+    requestAnimationFrame(animateScroll);
+  }, 1000);
+})();
