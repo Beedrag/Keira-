@@ -1,12 +1,2432 @@
-body {
-    background: #111827;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding-top: 100px;
+/* =========================================================
+   KEIRA'S BIRTHDAY
+   MAIN STYLESHEET
+
+   CONTENTS
+   01. Fonts
+   02. Personal Adjustment Panel
+   03. Base & Pinned Scroll Layout
+   04. Background & Atmosphere
+   05. Shared Scene Layers
+   06. Flower Artwork — Base Animations
+   07. Scene 1 — Countdown
+   08. Scene 2 — Bloom
+   09. Scene 3 — Birthday Reveal
+   10. Scene 4 — Solid Background
+   11. Scene 4 — Envelope
+   12. Letter Components
+   13. Shared Scroll Cue
+   14. Scene 5 & Reserved Components
+   15. Flower Overrides
+   16. Mobile Responsive
+   17. Reduced Motion
+========================================================= */
+
+
+/* =========================================================
+   01. FONTS
+========================================================= */
+
+@font-face {
+  font-family: "Silva Text";
+  src: url("assets/fonts/SilvaText.ttf") format("truetype");
+  font-weight: 400 900;
+  font-display: swap;
 }
 
-button {
-    padding: 12px 24px;
-    cursor: pointer;
+@font-face {
+  font-family: "Zing Script Rust SemiBold Base";
+  src: url("assets/fonts/ZingScriptRustSemiBoldBase.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+
+
+/* =========================================================
+   02. PERSONAL ADJUSTMENT PANEL
+   Edit these variables to customize the page.
+   Scroll animation variables are controlled by script.js.
+========================================================= */
+
+:root {
+  color-scheme: dark;
+
+  /* -------------------------------------------------------
+     COUNTDOWN CARD
+  ------------------------------------------------------- */
+
+  --card-width: 900px;
+  --card-height: 350px;
+  --card-x: 0px;
+  --card-y: -50px;
+  --card-radius: 40.5px;
+  --card-blur: 14px;
+
+  /* -------------------------------------------------------
+     COUNTDOWN HEADING
+  ------------------------------------------------------- */
+
+  --heading-size: 75px;
+  --heading-color: #ffe9e9;
+  --heading-x: 0px;
+  --heading-y: 25px;
+
+  /* -------------------------------------------------------
+     COUNTDOWN CLOCK
+  ------------------------------------------------------- */
+
+  --timer-size: 100px;
+  --timer-size-mobile: clamp(38px, 12vw, 66px);
+  --timer-color: #f1f1ff;
+  --timer-gap: 25px;
+  --timer-gap-mobile: 8px;
+  --timer-letter-spacing: 0px;
+  --timer-x: 0px;
+  --timer-y: 0px;
+
+  /* -------------------------------------------------------
+     FLOWER SIZES
+  ------------------------------------------------------- */
+
+  --main-flower-width: clamp(300px, 38vw, 650px);
+  --cluster-width: clamp(230px, 31vw, 520px);
+  --white-flower-width: clamp(210px, 25vw, 440px);
+  --vine-left-width: clamp(180px, 0vw, 380px);
+  --vine-right-width: clamp(160px, 18vw, 320px);
+  --vine-diagonal-width: clamp(220px, 31vw, 480px);
+  --echo-width: clamp(200px, 22vw, 430px);
+
+  /* -------------------------------------------------------
+     GLOBAL FLOWER POSITION & ROTATION
+  ------------------------------------------------------- */
+
+  --main-flower-x: -10px;
+  --main-flower-y: 15px;
+  --main-flower-rotation: 0deg;
+
+  --cluster-x: 0px;
+  --cluster-y: 0px;
+  --cluster-rotation: 0deg;
+
+  --white-flower-x: 0px;
+  --white-flower-y: 0px;
+  --white-flower-rotation: 0deg;
+
+  --vine-left-x: 0px;
+  --vine-left-y: 50px;
+  --vine-left-rotation: 0deg;
+
+  --vine-right-x: 0px;
+  --vine-right-y: 0px;
+  --vine-right-rotation: 0deg;
+
+  --vine-diagonal-x: 0px;
+  --vine-diagonal-y: 0px;
+  --vine-diagonal-rotation: 0deg;
+
+  --echo-x: 0px;
+  --echo-y: 0px;
+  --echo-rotation: -14deg;
+
+  /* -------------------------------------------------------
+     BACKGROUND ADJUSTMENTS
+  ------------------------------------------------------- */
+
+  --background-brightness: 1;
+  --background-saturation: 1;
+
+  /* -------------------------------------------------------
+     THEME COLORS
+  ------------------------------------------------------- */
+
+  --pink: #ffe4ed;
+  --lavender: #c8b6e2;
+  --ink: #302d55;
+
+  /* -------------------------------------------------------
+     GLOBAL SCROLL VARIABLES
+  ------------------------------------------------------- */
+
+  --bloom: 0;
+  --reveal: 0;
+  --title-reveal: 0;
+  --note-reveal: 0;
+  --atmosphere: 0;
+  --progress: 0;
+
+  /* -------------------------------------------------------
+     SCENE 2 — FLOWER POSITIONS
+  ------------------------------------------------------- */
+
+  --scene2-main-x: 0px;
+  --scene2-main-y: 100px;
+
+  --scene2-cluster-x: 50px;
+  --scene2-cluster-y: -150px;
+
+  --scene2-white-x: -58px;
+  --scene2-white-y: 300px;
+
+  --scene2-vine-left-x: 100px;
+  --scene2-vine-left-y: 290px;
+
+  --scene2-vine-right-x: 25px;
+  --scene2-vine-right-y: 0px;
+
+  --scene2-vine-diagonal-x: -70px;
+  --scene2-vine-diagonal-y: 400px;
+
+  --scene2-echo-x: -220px;
+  --scene2-echo-y: -470px;
+
+  --scene2-glow-x: 0px;
+  --scene2-glow-y: 0px;
+
+  /* -------------------------------------------------------
+     SCENE 2 — FLOWER SCALE
+  ------------------------------------------------------- */
+
+  --scene2-main-scale: 0.8;
+  --scene2-cluster-scale: 1;
+  --scene2-white-scale: 1;
+  --scene2-vine-left-scale: 1;
+  --scene2-vine-right-scale: 1.5;
+  --scene2-vine-diagonal-scale: 1.75;
+  --scene2-echo-scale: 1;
+  --scene2-glow-scale: 1;
+  --scene2-caption-scale: 1;
+
+  /* -------------------------------------------------------
+     SCENE 2 — FLOWER ROTATION
+  ------------------------------------------------------- */
+
+  --scene2-main-rotation: 0deg;
+  --scene2-cluster-rotation: -90deg;
+  --scene2-white-rotation: 0deg;
+  --scene2-vine-left-rotation: -35deg;
+  --scene2-vine-right-rotation: -50deg;
+  --scene2-vine-diagonal-rotation: -10deg;
+  --scene2-echo-rotation: 145deg;
+
+  /* -------------------------------------------------------
+     SCENE 3 — MAIN FLOWER
+  ------------------------------------------------------- */
+
+  --scene3-main-x: 0px;
+  --scene3-main-y: 150px;
+  --scene3-main-scale: 1.13;
+  --scene3-main-rotation: 0deg;
+  --scene3-main-blur: 0px;
+
+  /* -------------------------------------------------------
+     SCENE 3 — FLOWER CLUSTER
+  ------------------------------------------------------- */
+
+  --scene3-cluster-x: 50px;
+  --scene3-cluster-y: -150px;
+  --scene3-cluster-scale: 1;
+  --scene3-cluster-rotation: -90deg;
+  --scene3-cluster-blur: 0px;
+
+  /* -------------------------------------------------------
+     SCENE 3 — WHITE FLOWER
+  ------------------------------------------------------- */
+
+  --scene3-white-x: -58px;
+  --scene3-white-y: 300px;
+  --scene3-white-scale: 1;
+  --scene3-white-rotation: 0deg;
+  --scene3-white-blur: 0px;
+
+  /* -------------------------------------------------------
+     SCENE 3 — LEFT VINE
+  ------------------------------------------------------- */
+
+  --scene3-vine-left-x: 100px;
+  --scene3-vine-left-y: 290px;
+  --scene3-vine-left-scale: 1;
+  --scene3-vine-left-rotation: -35deg;
+  --scene3-vine-left-blur: 0px;
+
+  /* -------------------------------------------------------
+     SCENE 3 — RIGHT VINE
+  ------------------------------------------------------- */
+
+  --scene3-vine-right-x: 25px;
+  --scene3-vine-right-y: 0px;
+  --scene3-vine-right-scale: 1.5;
+  --scene3-vine-right-rotation: -50deg;
+  --scene3-vine-right-blur: 0px;
+
+  /* -------------------------------------------------------
+     SCENE 3 — DIAGONAL VINE
+  ------------------------------------------------------- */
+
+  --scene3-vine-diagonal-x: -70px;
+  --scene3-vine-diagonal-y: 400px;
+  --scene3-vine-diagonal-scale: 1.75;
+  --scene3-vine-diagonal-rotation: -10deg;
+  --scene3-vine-diagonal-blur: 0px;
+
+  /* -------------------------------------------------------
+     SCENE 3 — ECHO FLOWER
+  ------------------------------------------------------- */
+
+  --scene3-echo-x: -220px;
+  --scene3-echo-y: -470px;
+  --scene3-echo-scale: 1;
+  --scene3-echo-rotation: 145deg;
+  --scene3-echo-blur: 0px;
+
+  /* -------------------------------------------------------
+     SCENE 4 — MAIN FLOWER
+  ------------------------------------------------------- */
+
+  --scene4-main-x: 500px;
+  --scene4-main-y: -10px;
+  --scene4-main-scale: 0.40;
+
+
+  
+}
+
+
+/* =========================================================
+   03. BASE & PINNED SCROLL LAYOUT
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: #302d55;
+  font-family: "Silva Text", Georgia, serif;
+}
+
+body,
+main {
+  min-width: 320px;
+}
+
+/* The entire story scrolls while the stage stays pinned. */
+
+.scroll-story {
+  position: relative;
+  height: 400vh;
+  isolation: isolate;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 480px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #55517c;
+
+  /* Scroll variables controlled by script.js */
+
+  --progress: 0;
+  --bloom: 0;
+  --reveal: 0;
+  --title-reveal: 0;
+  --note-reveal: 0;
+  --atmosphere: 0;
+
+  /* Scene animation weights */
+
+  --scene2-active: calc(var(--bloom) * (1 - var(--reveal)));
+  --scene3-active: var(--reveal);
+}
+
+
+/* =========================================================
+   04. BACKGROUND & ATMOSPHERE
+========================================================= */
+
+/* Background image and ambient movement. */
+
+.sky {
+  position: absolute;
+  inset: -2%;
+  z-index: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(43, 39, 78, 0.12),
+      rgba(91, 65, 111, 0.06) 55%,
+      rgba(245, 176, 203, 0.12)
+    ),
+    url("assets/background.png") center / cover no-repeat;
+  transform:
+    scale(calc(1.04 + var(--atmosphere) * 0.045))
+    translateY(calc(var(--atmosphere) * -1.5%));
+  filter:
+    brightness(var(--background-brightness))
+    saturate(var(--background-saturation))
+    saturate(calc(1 + var(--atmosphere) * 0.08));
+  will-change: transform, filter;
+}
+
+/* Soft color overlay. */
+
+.scene-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 50% 45%,
+      rgba(224, 190, 232, 0.12),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(48, 45, 85, 0.04),
+      rgba(48, 45, 85, 0.1)
+    );
+  opacity: calc(0.65 + var(--atmosphere) * 0.25);
+}
+
+/* Decorative stars and particles. */
+
+.sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(255, 222, 233, .9) 0 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle,
+      rgba(255, 193, 221, .7) 0 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle,
+      rgba(255, 245, 230, .7) 0 1.5px,
+      transparent 2.5px
+    );
+  background-size:
+    127px 151px,
+    193px 181px,
+    257px 223px;
+  background-position:
+    10px 20px,
+    80px 60px,
+    130px 100px;
+  opacity: 0.35;
+  transform: translateY(calc(var(--atmosphere) * -12px));
+}
+
+/* Solid background with a radial mask. */
+
+
+.solid-background {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse at center,
+    #68618b 0%,
+    #55517c 35%,
+    #403b68 70%,
+    #302d55 100%
+  );
+
+  /* Keep the original mask settings. */
+  --scene3-clear: 42%;
+  --feather: 30%;
+
+  --reveal: var(--solid-progress, 0);
+  --scene4-cover: var(--scene4-background, 0);
+
+  --base-clear: calc(
+    75% - var(--reveal) * (75% - var(--scene3-clear))
+  );
+
+  opacity: calc(
+    var(--solid-opacity, 0) +
+    (1 - var(--solid-opacity, 0)) * var(--scene4-background, 0)
+  );
+
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    transparent var(--clear-size),
+    #000 calc(var(--clear-size) + var(--feather))
+  );
+
+  mask-image: radial-gradient(
+    ellipse at center,
+    transparent var(--clear-size),
+    #000 calc(var(--clear-size) + var(--feather))
+  );
+}
+
+
+
+/* =========================================================
+   05. SHARED SCENE LAYERS
+========================================================= */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   06. FLOWER ARTWORK — BASE ANIMATIONS
+   Shared flower rules and original scene transitions.
+========================================================= */
+
+.flower {
+  position: absolute;
+  display: block;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity, filter;
+}
+
+/* ---------------------------------------------------------
+   MAIN FLOWER
+--------------------------------------------------------- */
+
+.flower-main {
+  z-index: 10;
+  width: var(--main-flower-width);
+  left: calc(13% + var(--bloom) * 37%);
+  top: calc(
+    72% - var(--bloom) * 20%
+    + var(--reveal) * var(--scene3-main-y)
+  );
+
+  translate:
+    calc(
+      var(--main-flower-x)
+      + var(--scene2-main-x) * var(--scene2-active)
+    )
+    calc(
+      var(--main-flower-y)
+      + var(--scene2-main-y) * var(--scene2-active)
+    );
+
+  rotate: calc(
+    var(--main-flower-rotation)
+    + var(--scene2-main-rotation) * var(--scene2-active)
+  );
+
+  transform:
+    translate(-50%, -50%)
+    scale(calc(0.82 + var(--bloom) * 0.28))
+    scale(calc(
+      1 + (var(--scene2-main-scale) - 1) * var(--scene2-active)
+    ))
+    scale(calc(
+      1 + (var(--scene3-main-scale) - 1) * var(--reveal)
+    ));
+}
+
+/* ---------------------------------------------------------
+   FLOWER CLUSTER
+--------------------------------------------------------- */
+
+.flower-cluster {
+  z-index: 6;
+  width: var(--cluster-width);
+  right: -4%;
+  bottom: -7%;
+
+  translate:
+    calc(
+      var(--cluster-x)
+      + var(--scene2-cluster-x) * var(--scene2-active)
+      + var(--scene3-cluster-x) * var(--scene3-active)
+    )
+    calc(
+      var(--cluster-y)
+      + var(--scene2-cluster-y) * var(--scene2-active)
+      + var(--scene3-cluster-y) * var(--scene3-active)
+    );
+
+  rotate: calc(
+    var(--cluster-rotation)
+    + var(--scene2-cluster-rotation) * var(--scene2-active)
+  );
+
+  transform:
+    translate(
+      calc(var(--bloom) * 9%),
+      calc(var(--bloom) * 8%)
+    )
+    rotate(calc(var(--reveal) * -5deg))
+    scale(calc(
+      1 + (var(--scene2-cluster-scale) - 1) * var(--scene2-active)
+    ));
+
+  opacity: calc(1 - var(--reveal) * 0.38);
+  filter: blur(calc(var(--reveal) * 3px));
+}
+
+/* ---------------------------------------------------------
+   WHITE FLOWER
+--------------------------------------------------------- */
+
+.flower-white {
+  z-index: 4;
+  width: var(--white-flower-width);
+  right: -100px;
+  top: 12%;
+
+  translate:
+    calc(
+      var(--white-flower-x)
+      + var(--scene2-white-x) * var(--scene2-active)
+    )
+    calc(
+      var(--white-flower-y)
+      + var(--scene2-white-y) * var(--scene2-active)
+    );
+
+  rotate: calc(
+    var(--white-flower-rotation)
+    + var(--scene2-white-rotation) * var(--scene2-active)
+  );
+
+  transform:
+    translate(
+      calc(var(--bloom) * 5%),
+      calc(var(--bloom) * -5%)
+    )
+    rotate(calc(var(--bloom) * 8deg))
+    scale(calc(
+      1 + (var(--scene2-white-scale) - 1) * var(--scene2-active)
+    ));
+
+  opacity: calc(1 - var(--reveal) * 0.25);
+  filter: blur(calc(var(--reveal) * 2px));
+}
+
+/* ---------------------------------------------------------
+   LEFT VINE
+--------------------------------------------------------- */
+
+.vine-left {
+  z-index: 5;
+  width: var(--vine-left-width);
+  left: -4%;
+  top: -12%;
+
+  translate:
+    calc(
+      var(--vine-left-x)
+      + var(--scene2-vine-left-x) * var(--scene2-active)
+    )
+    calc(
+      var(--vine-left-y)
+      + var(--scene2-vine-left-y) * var(--scene2-active)
+    );
+
+  rotate: calc(
+    var(--vine-left-rotation)
+    + var(--scene2-vine-left-rotation) * var(--scene2-active)
+  );
+
+  transform:
+    translate(
+      calc(var(--bloom) * -4%),
+      calc(var(--bloom) * -3%)
+    )
+    rotate(calc(var(--bloom) * -5deg));
+}
+
+/* ---------------------------------------------------------
+   RIGHT VINE
+--------------------------------------------------------- */
+
+.vine-right {
+  z-index: 3;
+  width: var(--vine-right-width);
+  right: -1%;
+  top: -7%;
+
+  translate:
+    calc(
+      var(--vine-right-x)
+      + var(--scene2-vine-right-x) * var(--scene2-active)
+    )
+    calc(
+      var(--vine-right-y)
+      + var(--scene2-vine-right-y) * var(--scene2-active)
+    );
+
+  rotate: calc(
+    var(--vine-right-rotation)
+    + var(--scene2-vine-right-rotation) * var(--scene2-active)
+  );
+
+  transform:
+    translateY(calc(var(--bloom) * -5%))
+    rotate(calc(var(--reveal) * 5deg))
+    scale(calc(
+      1 + (var(--scene2-vine-right-scale) - 1) * var(--scene2-active)
+    ));
+
+  opacity: calc(1 - var(--reveal) * 0.25);
+}
+
+/* ---------------------------------------------------------
+   DIAGONAL VINE
+--------------------------------------------------------- */
+
+.vine-diagonal {
+  z-index: 6;
+  width: var(--vine-diagonal-width);
+  left: -185px;
+  bottom: 262.5px;
+
+  translate:
+    calc(
+      var(--vine-diagonal-x)
+      + var(--scene2-vine-diagonal-x) * var(--scene2-active)
+    )
+    calc(
+      var(--vine-diagonal-y)
+      + var(--scene2-vine-diagonal-y) * var(--scene2-active)
+    );
+
+  rotate: calc(
+    var(--vine-diagonal-rotation)
+    + var(--scene2-vine-diagonal-rotation) * var(--scene2-active)
+  );
+
+  transform:
+    translate(
+      calc(var(--bloom) * -3%),
+      calc(var(--bloom) * 4%)
+    )
+    rotate(calc(var(--bloom) * -5deg))
+    scale(calc(
+      1 + (var(--scene2-vine-diagonal-scale) - 1) * var(--scene2-active)
+    ));
+
+  opacity: calc(1 - var(--reveal) * 0.15);
+}
+
+/* ---------------------------------------------------------
+   ECHO FLOWER
+--------------------------------------------------------- */
+
+.flower-main-echo {
+  z-index: 7;
+  width: var(--echo-width);
+  left: 210px;
+  bottom: -130px;
+
+  translate:
+    calc(
+      var(--echo-x)
+      + var(--scene2-echo-x) * var(--scene2-active)
+    )
+    calc(
+      var(--echo-y)
+      + var(--scene2-echo-y) * var(--scene2-active)
+    );
+
+  rotate: calc(
+    var(--echo-rotation)
+    + var(--scene2-echo-rotation) * var(--scene2-active)
+  );
+
+  transform: scale(calc(0.9 + var(--bloom) * 0.08));
+  opacity: calc(0.9 - var(--reveal) * 0.45);
+  filter: blur(calc(var(--reveal) * 5px));
+}
+
+
+/* =========================================================
+   07. SCENE 1 — COUNTDOWN
+========================================================= */
+
+.countdown-scene {
+  z-index: 6;
+  display: grid;
+  place-items: center;
+}
+
+.countdown-card {
+  position: relative;
+  top: var(--card-y);
+  left: var(--card-x);
+  isolation: isolate;
+
+  width: var(--card-width);
+  height: var(--card-height);
+  max-width: calc(100vw - 32px);
+
+  padding: 36px 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  border: 1px solid rgba(255, 246, 255, 0.8);
+  border-radius: var(--card-radius);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.17) 0%,
+      rgba(225, 207, 245, 0.12) 45%,
+      rgba(177, 153, 213, 0.2) 100%
+    ),
+    rgba(190, 172, 220, 0.28);
+
+  -webkit-backdrop-filter: blur(var(--card-blur));
+  backdrop-filter: blur(var(--card-blur));
+
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.95),
+    inset 0 8px 12px rgba(255, 255, 255, 0.13),
+    inset 0 -3px 4px rgba(94, 67, 129, 0.2),
+    inset 0 -9px 15px rgba(109, 79, 144, 0.1),
+    inset 0 0 26px rgba(255, 235, 255, 0.16),
+    0 0 59px rgba(255, 220, 255, 0.09),
+    0 15px 46px rgba(37, 25, 66, 0.2);
+
+  transform:
+    translateY(calc(var(--bloom) * -100px))
+    scale(calc(1 - var(--bloom) * 0.08));
+
+  opacity: calc(1 - var(--bloom));
+  will-change: transform, opacity;
+}
+
+/* Inner glass border. */
+
+.countdown-card::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: calc(var(--card-radius) - 7px);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.35),
+    inset 0 -2px 4px rgba(111, 77, 149, 0.1);
+
+  pointer-events: none;
+}
+
+/* Countdown title. */
+
+.countdown-card h1 {
+  position: relative;
+  top: var(--heading-y);
+  left: var(--heading-x);
+  margin: 0;
+  font-size: var(--heading-size);
+  color: var(--heading-color);
+}
+
+/* Clock layout. */
+
+.timer {
+  position: relative;
+  top: var(--timer-y);
+  left: var(--timer-x);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--timer-gap);
+
+  margin-top: clamp(20px, 4vw, 44px);
+
+  font-family: "Bodoni MT Black", "Bodoni MT", serif;
+  font-size: var(--timer-size);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: var(--timer-letter-spacing);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--timer-color);
+}
+
+.timer i {
+  font: inherit;
+  font-style: normal;
+  opacity: 0.9;
+}
+
+
+/* =========================================================
+   08. SCENE 2 — BLOOM
+========================================================= */
+
+.bloom-scene {
+  z-index: 5;
+  opacity: calc(var(--bloom) * (1 - var(--reveal)));
+}
+
+/* Bloom glow behind the flowers. */
+
+.bloom-glow {
+  position: absolute;
+  width: 48vw;
+  height: 48vw;
+  max-width: 720px;
+  max-height: 720px;
+
+  left: 50%;
+  top: 55%;
+
+  border-radius: 50%;
+  background: rgba(255, 198, 225, 0.16);
+  filter: blur(65px);
+
+  transform: translate(-50%, -50%) scale(var(--bloom));
+
+  translate:
+    calc(var(--scene2-glow-x) * var(--scene2-active))
+    calc(var(--scene2-glow-y) * var(--scene2-active));
+}
+
+/* Optional bloom caption. */
+
+.bloom-caption {
+  position: absolute;
+  z-index: 6;
+  top: 12%;
+  left: 10%;
+  right: 10%;
+
+  margin: 0;
+  text-align: center;
+
+  color: #fff0f6;
+  font-size: clamp(18px, 3vw, 38px);
+
+  transform: translateY(calc((1 - var(--bloom)) * 25px));
+  opacity: calc(var(--bloom) * (1 - var(--reveal)));
+}
+
+
+/* =========================================================
+   09. SCENE 3 — BIRTHDAY REVEAL
+========================================================= */
+
+.birthday-scene {
+  z-index: 9;
+  opacity: var(--reveal);
+}
+
+.birthday-copy {
+  position: absolute;
+  top: 6vh;
+  left: 4%;
+  right: 4%;
+
+  text-align: center;
+  color: #f5a8ba;
+
+  transform: translateY(calc((1 - var(--title-reveal)) * 25px));
+  z-index: 12;
+}
+
+/* Script font used for the greeting. */
+
+.script {
+  font-family: "Zing Script Rust SemiBold Base", cursive;
+  font-weight: 600;
+}
+
+.greeting {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 4vw, 54px);
+
+  opacity: var(--title-reveal);
+
+  transform: translateY(calc((1 - var(--title-reveal)) * 16px));
+}
+
+/* Birthday name. */
+
+.birthday-copy h2 {
+  margin: 0;
+  font-size: clamp(32px, 7vw, 100px);
+  line-height: 1.1;
+  font-weight: 800;
+  text-wrap: balance;
+
+  text-shadow: 0 5px 18px rgba(35, 25, 59, 0.2);
+
+  opacity: var(--title-reveal);
+
+  transform: translateY(calc((1 - var(--title-reveal)) * 22px));
+}
+
+/* Scene 3 label. */
+
+.scene-three-label {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 8;
+
+  color: #ffe4ed;
+  font-family: "Zing Script Rust SemiBold Base", cursive;
+  font-size: clamp(22px, 3vw, 36px);
+
+  opacity: var(--reveal);
+  transform: translateY(calc((1 - var(--reveal)) * -12px));
+}
+
+/* Optional ending cue. */
+
+.end-cue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5%;
+
+  text-align: center;
+  color: #ffe4ed;
+  font-size: clamp(14px, 1.6vw, 20px);
+
+  opacity: var(--note-reveal);
+}
+
+
+
+/* =========================================================
+   10. SCENE 4 — SOLID BACKGROUND
+========================================================= */
+
+.scene4-solid-background {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+
+  background: #55517c;
+  opacity: var(--scene4-background, 0);
+}
+
+.scene-four {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  background: transparent;
+  opacity: 1;
+  pointer-events: none;
+} 
+
+
+
+/* =========================================================
+   12. LETTER COMPONENTS
+   Styles for the optional letter section and letter card.
+========================================================= */
+
+.letter-section {
+  position: relative;
+  z-index: 10;
+  min-height: 100svh;
+
+  display: grid;
+  place-items: center;
+
+  padding: 80px 24px;
+  color: #fff0f5;
+
+  background:
+    linear-gradient(
+      rgba(48, 45, 85, 0.45),
+      rgba(48, 45, 85, 0.8)
+    ),
+    url("assets/background.png") center / cover fixed;
+}
+
+.letter-card {
+  width: min(100%, 760px);
+  padding: clamp(28px, 5vw, 64px);
+
+  border: 1px solid rgba(255, 240, 250, 0.3);
+  border-radius: 28px;
+
+  background: rgba(111, 91, 139, 0.45);
+
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+
+  box-shadow: 0 20px 70px rgba(24, 18, 48, 0.18);
+}
+
+.letter-kicker {
+  margin: 0 0 12px;
+  font-size: clamp(24px, 3vw, 38px);
+  color: #f5b1c7;
+}
+
+.letter-card h2 {
+  margin: 0 0 24px;
+  font-size: clamp(28px, 4vw, 48px);
+}
+
+.letter-card > p:not(.letter-kicker):not(.signature) {
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.9;
+}
+
+.signature {
+  margin: 30px 0 0;
+  color: #f5b1c7;
+  font-size: clamp(21px, 2.5vw, 30px);
+  font-family: "Zing Script Rust SemiBold Base", cursive;
+}
+
+
+/* =========================================================
+   13. SHARED SCROLL CUE
+========================================================= */
+
+/* Base scroll cue. */
+
+.scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  font-size: .65rem;
+
+  margin-top: 28px;
+  opacity: .86;
+  color: inherit;
+}
+
+.scroll-cue span {
+  width: 18px;
+  height: 28px;
+
+  border: 1px solid currentColor;
+  border-radius: 20px;
+
+  position: relative;
+}
+
+.scroll-cue span::after {
+  content: "";
+  position: absolute;
+
+  left: 50%;
+  top: 5px;
+
+  width: 3px;
+  height: 5px;
+
+  border-radius: 5px;
+  background: currentColor;
+
+  transform: translateX(-50%);
+  animation: scroll-dot 1.5s ease-in-out infinite;
+}
+
+/* Scroll cue animation. */
+
+@keyframes scroll-dot {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+    opacity: .3;
+  }
+
+  50% {
+    transform: translate(-50%, 8px);
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   14. SCENE 5 & RESERVED COMPONENTS
+   These selectors are retained from the original CSS.
+========================================================= */
+
+.scene-six {
+  z-index: 12;
+  opacity: var(--scene6-opacity, 0);
+}
+
+.scene-six-content {
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  place-content: center;
+
+  text-align: center;
+  color: #fff0f5;
+}
+
+.scene-five {
+  z-index: 13;
+  opacity: var(--scene5-opacity, 0);
+  pointer-events: none;
+}
+
+.scene-five-label {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+
+  color: #ffe4ed;
+  font-family: "Zing Script Rust SemiBold Base", cursive;
+  font-size: clamp(22px, 3vw, 36px);
+}
+
+
+/* =========================================================
+   15. ORIGINAL OVERRIDES
+   These rules originally appeared later in the stylesheet.
+   They remain later in the cascade to preserve behavior.
+========================================================= */
+
+/* Scene 3 birthday copy positioning. */
+
+.birthday-copy .scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+  margin-top: 28px;
+
+  color: #f5a8ba;
+  text-align: center;
+  opacity: 0.86;
+}
+
+/* Scene 4 main flower position and scale override. */
+
+.flower-main {
+  translate:
+    calc(
+      var(--main-flower-x)
+      + var(--scene2-main-x) * var(--scene2-active)
+      + var(--scene4-main-x) * var(--scene4-background, 0)
+    )
+    calc(
+      var(--main-flower-y)
+      + var(--scene2-main-y) * var(--scene2-active)
+      + var(--scene4-main-y) * var(--scene4-background, 0)
+    );
+
+  transform:
+    translate(-50%, -50%)
+    scale(calc(0.82 + var(--bloom) * 0.28))
+    scale(calc(
+      1 + (var(--scene2-main-scale) - 1) * var(--scene2-active)
+    ))
+    scale(calc(
+      1 + (var(--scene3-main-scale) - 1) * var(--reveal)
+    ))
+    scale(calc(
+      1 + (var(--scene4-main-scale) - 1) * var(--scene4-background, 0)
+    ));
+}
+
+/* Scene 3 scroll cue styling override. */
+
+.birthday-scene .scroll-cue {
+  position: relative;
+  z-index: 12;
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 28px;
+
+  color: #ffe4ed;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  font-size: .65rem;
+
+  opacity: 0.86;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.birthday-scene .scroll-cue span {
+  display: block;
+  width: 18px;
+  height: 28px;
+
+  border: 1px solid currentColor;
+  border-radius: 20px;
+
+  position: relative;
+}
+
+.birthday-scene .scroll-cue span::after {
+  content: "";
+  position: absolute;
+
+  left: 50%;
+  top: 5px;
+
+  width: 3px;
+  height: 5px;
+
+  border-radius: 5px;
+  background: currentColor;
+
+  transform: translateX(-50%);
+  animation: scroll-dot 1.5s ease-in-out infinite;
+}
+
+/* Original second keyframe declaration retained. */
+
+@keyframes scroll-dot {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+    opacity: .3;
+  }
+
+  50% {
+    transform: translate(-50%, 8px);
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   16. MOBILE RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+  .scroll-story {
+    height: 400vh;
+  }
+
+  /* Countdown card. */
+
+  .countdown-card {
+    width: min(var(--card-width), 90vw);
+    height: var(--card-height);
+    padding: 30px 14px;
+  }
+
+  .countdown-card h1 {
+    font-size: clamp(30px, 8vw, 48px);
+  }
+
+  .timer {
+    gap: var(--timer-gap-mobile);
+    font-size: var(--timer-size-mobile);
+    letter-spacing: -3px;
+  }
+
+  /* Flowers. */
+
+  .flower-main {
+    width: 68vw;
+    left: calc(20% + var(--bloom) * 30%);
+    top: calc(65% - var(--bloom) * 10%);
+  }
+
+  .flower-cluster {
+    width: 54vw;
+    right: -12%;
+    bottom: 0;
+  }
+
+  .flower-white {
+    width: 45vw;
+    right: -10%;
+    top: 25%;
+  }
+
+  .vine-left {
+    width: 36vw;
+    left: -10%;
+    top: -7%;
+  }
+
+  .vine-right {
+    width: 27vw;
+    right: -6%;
+    top: -7%;
+  }
+
+  .vine-diagonal {
+    width: 43vw;
+    left: -12%;
+    bottom: -13%;
+  }
+
+  .flower-main-echo {
+    width: 38vw;
+    left: -12%;
+    bottom: -4%;
+  }
+
+  /* Birthday copy. */
+
+  .birthday-copy {
+    top: 8vh;
+  }
+
+  .birthday-copy h2 {
+    font-size: clamp(34px, 9vw, 60px);
+  }
+
+  /* Mobile background behavior. */
+
+  .letter-section {
+    background-attachment: scroll;
+  }
+}
+
+
+/* =========================================================
+   17. ACCESSIBILITY — REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .hint-dot {
+    animation: none;
+  }
+}
+
+/* Scene 3 content stays above the flowers and fades into Scene 4 */
+
+.birthday-scene {
+  z-index: 14;
+}
+
+.birthday-scene .birthday-copy,
+.birthday-scene .scroll-cue {
+  position: relative;
+  z-index: 9999;
+
+  opacity: calc(
+    var(--reveal) * (1 - var(--scene4-background, 0))
+  );
+
+  pointer-events: auto;
+  transition: opacity 0.1s linear;
+}
+
+/* Geser tulisan Happy Birthday dan nama */
+.birthday-scene .birthday-copy {
+  left: 0px;
+  top: 35px;
+}
+
+/* Geser scroll cue */
+.birthday-scene .scroll-cue {
+  left: 0px;
+  top: 0px;
+}
+
+.birthday-scene .greeting,
+.birthday-scene .birthday-copy h2 {
+  opacity: calc(
+    var(--title-reveal) * (1 - var(--scene4-background, 0))
+  );
+}
+
+.birthday-scene .scroll-cue {
+  color: #ffe4ed;
+}
+
+
+
+/* =========================================================
+   SCENE 4 — PAPER RISE FROM BOTTOM CENTER
+========================================================= */
+
+
+.letter-paper {
+  position: absolute;
+  left: 50%;
+  top: 49%;
+
+  width: min(850px, 90vw);
+  min-height: 75vh;
+  padding: 60px 55px;
+  box-sizing: border-box;
+
+  background: #fffaf0;
+  border-radius: 4px;
+
+  opacity: var(--scene4-background, 0);
+
+  transform: translate(
+    -50%,
+    calc(
+      -40%
+      + 15vh
+      + (1 - var(--scene4-background, 0)) * 100vh
+    )
+  );
+
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+.scene-four-hook {
+  position: absolute;
+  top: -25%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 20;
+  pointer-events: none;
+  opacity: var(--hook-progress, 0);
+}
+
+.scene-four-hook p {
+  margin: 0;
+  padding: 0 12px;
+  white-space: nowrap;
+
+  font-family: "Zing Script Rust SemiBold Base", cursive;
+  font-size: clamp(20px, 2.5vw, 32px);
+  line-height: 1.3;
+  color: #fffaf0;
+
+  text-shadow: 0 2px 12px rgba(20, 15, 40, 0.18);
+}
+
+
+/* =========================================
+   SCENE 7 — NORMAL SCROLL
+   ========================================= */
+
+.scene-seven {
+  position: relative;
+  z-index: 20;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background: #302d55;
+  padding: 0 0 100px;
+}
+
+/* Continuation of the letter paper */
+
+.letter-continuation {
+  position: relative;
+
+  width: min(850px, 90vw);
+  min-height: 150vh;
+
+  margin: 0 auto;
+  padding: 60px 55px 100px;
+
+  background: #fffaf0;
+
+  border-radius: 0;
+
+  box-shadow:
+    0 12px 35px rgba(20, 15, 40, 0.22),
+    0 2px 8px rgba(20, 15, 40, 0.12);
+}
+
+@media (max-width: 600px) {
+  .letter-continuation {
+    width: 90vw;
+    padding: 35px 24px 70px;
+  }
+}
+
+.letter-paper {
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.letter-continuation {
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  margin-top: -1px;
+}
+
+
+/* SCENE 4 — SCROLL CUE */
+
+.scene-four .scene4-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  z-index: 30;
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  margin: 0;
+  color: #fffaf0;
+  text-align: center;
+  text-decoration: none;
+
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+/* Hide Scene 3 cue while Scene 4 takes over */
+.birthday-scene .scroll-cue {
+  opacity: calc(
+    var(--reveal) * (1 - var(--scene4-background, 0))
+  );
+}
+
+
+
+/* Scene 7: Letter paper ends here */
+.letter-continuation {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Scene 8: Empty space */
+.scene-eight {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 70vh;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  background: #302d55;
+  box-sizing: border-box;
+}
+
+/* SCENE 8 — BIRTHDAY CAKE */
+#birthday-cake {
+  position: relative;
+  top:50px;
+  left:0;
+}
+
+#birthday-cake:before {
+  content:"";
+  position: absolute;
+  background-color: #ede0d4;
+  width: 400px;
+  height:140px;
+  border-radius:50%;
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-10%);
+  box-shadow: inset -2px -5px #e6ccb2;
+}
+
+.cake {
+  position: absolute;
+  background-color: #ddb892;
+  width: 350px;
+  height:130px;
+  transform: translate(-50%,-60%);
+}
+
+.cake:before, .cake:after {
+  content:"";
+  position: absolute;
+}
+
+.cake:before, .middle, .middle:before {
+  border-radius: 50% 50% 50% 50% / 0% 0% 100% 100%;
+  width:350px;
+  height:50px;
+}
+
+.cake:before {
+  background-color: #ddb892;
+  top:130px;
+}
+
+.cake:after {
+  background-color: #b08968;
+  width:350px;
+  height:30px;
+  top:50px;
+}
+
+.middle {
+  position: absolute;
+  background-color: #b08968;
+  top:80px;
+  z-index:1;
+}
+
+.middle:before {
+  content:"";
+  position: absolute;
+  background-color: #ddb892;
+  top:-35px;
+}
+
+.top {
+  position: absolute;
+  background-color: #7f5539;
+  width:350px;
+  height: 90px;
+  border-radius:50%;
+  z-index:2;
+  top:-45px;
+  box-shadow: inset -5px -1px #fff, inset -70px 2px rgba(255,255,255,.1);
+}
+
+.chocs {
+  position: absolute;
+  width: 55px;
+  height:50px;
+  background-color: #7f5539;
+  top:0;
+  z-index:1;
+  border-radius: 50% 50% 50% 50% / 0% 0% 100% 100%;
+  box-shadow: 49px 20px #7f5539, 98px 25px #7f5539, 147px 30px #7f5539, 196px 25px #7f5539, 245px 20px #7f5539, 295px 0 #7f5539, 0px 4px #fff, 49px 24px #fff, 98px 29px #fff, 147px 34px #fff, 196px 29px #fff, 245px 24px #fff, 295px 4px #fff;
+}
+
+.chocs:before {
+  content:"";
+  position: absolute;
+  width:175px;
+  height:180px;
+  background-color: rgba(255,255,255,.1);
+  border-radius: 100% 0% 100% 0% / 0% 72% 28% 100%;
+  left:175px;
+  top:0;
+}
+
+.candles {
+  position: absolute;
+  width:30px;
+  height: 80px;
+  background-color: #0081a7;
+  top:-160px;
+  left:-20px;
+  box-shadow: 50px 20px #0081a7, -50px 20px #0081a7;
+}
+
+.candles:before {
+  content:"";
+  position: absolute;
+  width:30px;
+  height: 10px;
+  background-color: #0081a7;
+  border-radius:50%;
+  top:-5px;
+  box-shadow: 0 80px #0081a7, -50px 20px #0081a7, -50px 100px #0081a7, 50px 20px #0081a7, 50px 100px #0081a7, inset 2px -1px #fff;
+}
+
+.candles:after {
+  content:"";
+  position: absolute;
+  width:30px;
+  height: 10px;
+  border-radius:50%;
+  top:15px;
+  left:50px;
+  box-shadow: inset 2px -1px #fff;
+}
+
+.shadows {
+  position: absolute;
+  width:30px;
+  height: 10px;
+  border-radius:50%;
+  box-shadow: inset 2px -1px #fff;
+  left:-50px;
+  top:15px;
+}
+
+.shadows:before {
+  content:"";
+  position: absolute;
+  background-color: #333;
+  width:1.5px;
+  height:15px;
+  left:14.5px;
+  top:-10px;
+  box-shadow:50px -20px #333, 100px 0 #333;
+}
+
+.shadows:after {
+  content:"";
+  position: absolute;
+  width:15px;
+  height:90px;
+  left:15px;
+  background-color: rgba(255,255,255,.1);
+  box-shadow: 50px -20px rgba(255,255,255,.1), 100px 0 rgba(255,255,255,.1);
+  border-radius: 0% 100% 50% 50% / 100% 6% 10% 0%;
+}
+
+
+.flame, .flame:before, .flame2, .flame2:before, .flame3, .flame3:before {
+  position: absolute;
+  border-radius: 80% 15% 55% 50% / 55% 15% 80% 50%;
+}
+
+.flame,.flame3, .flame2 {
+  cursor: pointer;
+  width:30px;
+  height: 30px;
+  transform: rotate(-45deg);
+  z-index:4;
+  background-color: rgba(252,191,73,.8);
+  transition: .5s;
+  animation: flame .5s infinite;
+}
+
+.flame {
+  top:-40px;
+}
+
+.flame2, .flame3 {
+  top: -20px;
+}
+
+.flame2 {
+  left:-50px;
+}
+
+.flame3 {
+  left: 50px;
+}
+
+.flame:before, .flame2:before, .flame3:before {
+  content:"";
+  background-color: rgba(247,127,0,.4);
+  width:20px;
+  height:20px;
+  top:5px;
+  left:5px;
+}
+
+
+@keyframes flame {
+  0%, 25%, 100% {transform: scaleY(1) rotate(-45deg);}
+  50%, 75% {transform: scaleY(1.1) rotate(-45deg);}
+}
+
+.text, .text2 {
+  position: absolute;
+  color: white;
+  font-family: 'Brush Script MT', cursive;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.text {
+  width: 350px;
+  font-size: 50px;
+  top: 100px;
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.text2 {
+  font-size: 25px;
+  width: 300px;
+  top: 155px;
+}
+
+
+/* FIX: BIRTHDAY CAKE POSITION IN SCENE 8 */
+
+.scene-eight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-height: 70vh;
+  height: 70vh;
+}
+
+#birthday-cake {
+  position: relative;
+  width: 400px;
+  height: 300px;
+  top: 0;
+  left: 0;
+  flex: 0 0 400px;
+}
+
+#birthday-cake .cake {
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -60%);
+}
+
+#birthday-cake .candles {
+  top: 8%;
+  left: calc(50% - 15px);
+}
+
+#birthday-cake:before {
+  top: 60%;
+}
+
+#birthday-cake .text {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#birthday-cake .text2 {
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  #birthday-cake {
+    transform: scale(0.75);
+    transform-origin: center center;
+  }
+}
+
+.birthday-scene .birthday-copy {
+  top: 0px;
+}
+
+#birthday-cake.blown .text {
+  opacity: 1;
+  top: -125px;
+}
+
+#birthday-cake.blown .text2 {
+  opacity: 1;
+  top: 300px;
+}
+
+/* Posisi tulisan sebelum lilin ditiup */
+#birthday-cake:not(.blown) .text {
+  top: -125px;
+}
+
+#birthday-cake:not(.blown) .text2 {
+  top: 300px;
+}
+
+/* Posisi tulisan setelah lilin ditiup */
+#birthday-cake.blown .text {
+  top: -107px;
+}
+
+#birthday-cake.blown .text2 {
+  top: 300px;
+}
+
+/* Posisi awal: tersembunyi di balik kue */
+#birthday-cake .text{
+  opacity: 0;
+  transform: translate(-50%, 60px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+/* Setelah lilin ditiup: naik dari balik kue */
+#birthday-cake.blown .text {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+
+/* LETTER CONTENT — TOP LAYER */
+#scene4 .letter-paper {
+  position: absolute;
+  z-index: 9999;
+}
+
+#scene4 .letter-content {
+  position: relative;
+  z-index: 10000;
+  color: #000000 !important;
+}
+
+#scene4 .letter-content p,
+#scene4 .letter-content h2,
+#scene4 .letter-content .letter-kicker,
+#scene4 .letter-content .signature {
+  position: relative;
+  z-index: 10001;
+  color: #000000 !important;
+}
+
+
+/* =========================================
+   LETTER STYLING — SCENE 4 & SCENE 7
+   ========================================= */
+
+/* Keep the letter above decorative artwork */
+#scene4 {
+  z-index: 100;
+}
+
+#scene4 .letter-paper {
+  z-index: 101;
+  color: #000;
+}
+
+/* Letter content sits above the paper and hook */
+#scene4 .letter-content {
+  position: relative;
+  z-index: 102;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 32px;
+
+  color: #000 !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(15px, 1.15vw, 18px);
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.1px;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+/* All text stays black */
+#scene4 .letter-content p,
+#scene4 .letter-content h2,
+#scene4 .letter-content span {
+  position: relative;
+  z-index: 103;
+  color: #000 !important;
+}
+
+/* Letter heading */
+#scene4 .letter-content h2 {
+  margin: 0 0 24px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(26px, 2.5vw, 36px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+}
+
+/* Paragraph spacing */
+#scene4 .letter-content p {
+  margin: 0 0 22px;
+}
+
+/* Scene 7 continuation */
+#scene7 .letter-continuation {
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+
+  color: #000 !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(15px, 1.15vw, 18px);
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.1px;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+#scene7 .letter-continuation p {
+  margin: 0 0 24px;
+  color: #000 !important;
+}
+
+/* Signature */
+#scene4 .letter-content .signature,
+#scene7 .letter-continuation .signature {
+  margin-top: 32px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.8;
+  text-align: right;
+  color: #000 !important;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+  #scene4 .letter-content {
+    margin-top: 24px;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  #scene4 .letter-content h2 {
+    margin-bottom: 18px;
+    font-size: 27px;
+  }
+
+  #scene4 .letter-content p {
+    margin-bottom: 18px;
+  }
+
+  #scene7 .letter-continuation {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+}
+
+
+/* =========================================================
+   NEW EFFECTS — FALLING PETALS & TWINKLING STARS
+========================================================= */
+
+/* ---------------------------------------------------------
+   FALLING PETALS — SCENES 1–3
+--------------------------------------------------------- */
+
+.petal-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 13;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: calc(1 - var(--scene4-background, 0));
+  transition: opacity 0.15s linear;
+}
+
+.falling-petal {
+  position: absolute;
+  top: -45px;
+  left: var(--petal-left);
+  width: var(--petal-size);
+  height: calc(var(--petal-size) * 1.45);
+
+  background: linear-gradient(
+    145deg,
+    #fff0f5 0%,
+    #f7b8d0 55%,
+    #e98eaf 100%
+  );
+
+  border-radius: 80% 10% 75% 20%;
+  opacity: var(--petal-opacity);
+
+  animation: petal-fall var(--petal-duration) linear
+    var(--petal-delay) infinite;
+
+  will-change: transform;
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -8vh, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate3d(35px, 25vh, 0) rotate(100deg);
+  }
+
+  50% {
+    transform: translate3d(-25px, 52vh, 0) rotate(220deg);
+  }
+
+  75% {
+    transform: translate3d(30px, 78vh, 0) rotate(310deg);
+  }
+
+  100% {
+    transform: translate3d(-15px, 115vh, 0) rotate(450deg);
+  }
+}
+
+/* ---------------------------------------------------------
+   TWINKLING STARS — SCENE 4 ONWARD
+--------------------------------------------------------- */
+
+.twinkle-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  overflow: hidden;
+  pointer-events: none;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+}
+
+.twinkle-layer.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.twinkle-star {
+  position: absolute;
+  width: var(--star-size);
+  height: var(--star-size);
+  left: var(--star-left);
+  top: var(--star-top);
+
+  border-radius: 50%;
+  background: #fff8e8;
+
+  box-shadow:
+    0 0 4px rgba(255, 248, 232, 0.9),
+    0 0 10px rgba(255, 220, 240, 0.45);
+
+  opacity: 0;
+
+  animation: star-twinkle var(--star-duration) ease-in-out
+    var(--star-delay) infinite;
+}
+
+.twinkle-star::before,
+.twinkle-star::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: rgba(255, 248, 232, 0.75);
+  transform: translate(-50%, -50%);
+}
+
+.twinkle-star::before {
+  width: 1px;
+  height: calc(var(--star-size) * 3.2);
+}
+
+.twinkle-star::after {
+  width: calc(var(--star-size) * 3.2);
+  height: 1px;
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.08;
+    transform: scale(0.55);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+}
+
+/* Keep the effects lightweight on smaller devices. */
+
+@media (max-width: 600px) {
+  .falling-petal {
+    animation-duration: calc(var(--petal-duration) * 1.15);
+  }
+
+  .twinkle-star {
+    box-shadow: 0 0 5px rgba(255, 248, 232, 0.65);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .falling-petal,
+  .twinkle-star {
+    animation-play-state: paused;
+  }
+}
+
+
+
+/* =========================================
+   BIRTHDAY CONFETTI
+========================================= */
+
+#confetti-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+#confetti-layer.is-active {
+  visibility: visible;
+}
+
+.birthday-confetti {
+  position: absolute;
+  display: block;
+  border-radius: 2px;
+  opacity: 0;
+  animation: birthday-confetti-burst
+    var(--confetti-duration) ease-out
+    var(--confetti-delay) forwards;
+}
+
+@keyframes birthday-confetti-burst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(var(--confetti-x), var(--confetti-y))
+      rotate(var(--confetti-rotation));
+  }
+}
+
+
+/* =========================================
+   COUNTDOWN OPENING — 0.5 SECONDS
+========================================= */
+
+.timer.is-spinning span {
+  transform-origin: center;
+  animation: countdown-number-spin 0.5s ease-in-out both;
+}
+
+.timer.is-spinning i {
+  animation: countdown-colon-flash 0.5s ease-in-out both;
+}
+
+@keyframes countdown-number-spin {
+  0% {
+    transform: perspective(400px) rotateX(0deg) scale(1);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  45% {
+    transform: perspective(400px) rotateX(360deg) scale(1.15);
+    filter: blur(3px);
+    opacity: 0.65;
+  }
+
+  100% {
+    transform: perspective(400px) rotateX(720deg) scale(1);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes countdown-colon-flash {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.2; }
+}
+
+/* =========================================
+   COUNTDOWN PETAL BURST — LEFT & RIGHT
+========================================= */
+
+.countdown-burst-petal {
+  position: absolute;
+  top: var(--burst-top);
+  left: var(--burst-left);
+  width: var(--burst-size);
+  height: calc(var(--burst-size) * 1.5);
+  border-radius: 80% 10% 75% 20%;
+  background: linear-gradient(
+    145deg,
+    #fff0f5 0%,
+    #f7b8d0 55%,
+    #e98eaf 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: countdown-petal-launch
+    var(--burst-duration) cubic-bezier(.15,.65,.25,1)
+    var(--burst-delay) both;
+}
+
+@keyframes countdown-petal-launch {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(.4);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  65% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate3d(var(--burst-x), var(--burst-y), 0)
+      rotate(var(--burst-rotation))
+      scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timer.is-spinning span,
+  .timer.is-spinning i,
+  .countdown-burst-petal {
+    animation-duration: 0.01ms;
+  }
+}
+
+
+.joygram-link {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.joygram-link a {
+  display: inline-block;
+  color: #000;
+  text-decoration: none;
+  border: 1px solid rgba(243, 196, 215, 0.5);
+  border-radius: 30px;
+  padding: 12px 22px;
+  transition: all 0.3s ease;
+}
+
+.joygram-link a:hover {
+  color: #000;
+  background: rgba(243, 196, 215, 0.12);
+  border-color: #f3c4d7;
+  transform: translateY(-3px);
 }

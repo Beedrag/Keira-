@@ -1,15 +1,182 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Test</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#302d55">
+  <meta name="description" content="A little birthday universe made for Keira.">
+  <title>Keira's Birthday 🌸</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-    <h1 id="title">Hello, World!</h1>
-    <button onclick="changeText()">Click Me</button>
+  <main>
+    <section class="scroll-story" id="story" aria-label="Keira's birthday story">
+      <div class="stage" id="stage">
+        <div class="solid-background"></div>
+        <div class="sky" aria-hidden="true"></div>
+        <div class="scene-wash" aria-hidden="true"></div>
+        <div class="sparkles" aria-hidden="true"></div>
 
-    <script src="script.js"></script>
+        <!-- Decorative artwork layers -->
+        <img class="flower flower-main" src="assets/flower-main.png" alt="" aria-hidden="true">
+        <img class="flower flower-cluster" src="assets/flower-cluster.png" alt="" aria-hidden="true">
+        <img class="flower flower-white" src="assets/lily-white.png" alt="" aria-hidden="true">
+        <img class="flower vine-left" src="assets/vine-corner.png" alt="" aria-hidden="true">
+        <img class="flower vine-right" src="assets/vine-vertical.png" alt="" aria-hidden="true">
+        <img class="flower vine-diagonal" src="assets/vine-diagonal.png" alt="" aria-hidden="true">
+        <img class="flower flower-main-echo" src="assets/flower-main-alt.png" alt="" aria-hidden="true">
+
+        <!-- Scene 1: Countdown -->
+        <div class="scene countdown-scene" data-scene="0">
+          <div class="countdown-card">
+            <h1>Keira’s Birthday in</h1>
+
+            <div
+              class="timer"
+              id="birthday-countdown"
+              aria-label="Zero hours, zero minutes, zero seconds"
+            >
+              <span>00</span>
+              <i>:</i>
+              <span>00</span>
+              <i>:</i>
+              <span>00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene 2: Bloom -->
+        <div class="scene bloom-scene" data-scene="1">
+          <div class="bloom-glow" aria-hidden="true"></div>
+        </div>
+
+        <!-- Scene 3: Birthday Reveal -->
+        <div class="scene birthday-scene" data-scene="2">
+          <div class="birthday-copy">
+            <p class="script greeting">Happy Birthday My Bestfriend!!</p>
+            <h2>Keira Indi Khairunnisa</h2>
+
+            <a
+              class="scroll-cue scene4-scroll-cue"
+              aria-label="Scroll gently to Scene 4"
+            >
+              <span></span>
+              scroll gently
+            </a>
+          </div>
+        </div>
+
+        <!-- Scene 4: Letter -->
+        <section class="scene scene-four" id="scene4" data-scene="3">
+          <article class="letter-paper">
+            <div class="scene-four-hook">
+              <p class="script">hey, birthday girl. this one’s for you.</p>
+            </div>
+
+            <div class="letter-content">
+              <h2>Dear Keira,</h2>
+
+              <p>
+                Happy 19th Birthday to my only girl bestfriend!<br>
+                the firstborn child and the first grand child in your warm family. you are the strongest girl i have ever met,
+                good job for pass through all the difficult traits you've faced lately
+              </p>
+
+              <p>
+                maafin gw ya ra, mungkin gw ga selalu ada buat lu. dan memang iya, selama ini nyatanya kita emang jarang ketemu,
+                tapi itu lah yang kerasa beda. punya seorang sahabat yang selalu berada jauh dari jangkauan gw, kadangkala sedih dan senang
+                kita kabarin lewat virtual. lu emang beda ya ra, ga kayak sahabat2 gw yang lain yang gw emg bisa ketemu kapan aja (dulu).
+                maafin gw juga karna mungkin adakalanya gw bukan pendengar yang baik, dan kadang gw juga yang kebawa emosi, gw yang ga peka
+                sama keadaan, dan hal2 yang bikin hati lu ga enak lainnya. gw minta maaf yaa buat itu semua.
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <!-- Falling petals: Scenes 1–3 -->
+        <div
+          class="petal-layer"
+          id="petal-layer"
+          aria-hidden="true"
+        ></div>
+
+      </div><!-- Penutup .stage -->
+    </section><!-- Penutup .scroll-story -->
+
+    <!-- Twinkling stars: Scene 4 through Scene 8 -->
+    <div
+      class="twinkle-layer"
+      id="twinkle-layer"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Birthday confetti: Scene 8 -->
+    <div
+      id="confetti-layer"
+      aria-hidden="true"
+    ></div>
+
+    <!-- SCENE 7: LETTER CONTINUATION -->
+    <section class="scene-seven" id="scene7">
+      <div class="letter-continuation">
+        <p>
+          dan lu bener kok, advice2 yang pernah lu sampein itu daging semua, yang nandain
+          lu itu udah jadi perempuan dewasa, yang punya pikiran matang. gw salut
+          sama lu yang berani ngehadepin semua ujian2 di hidup lu, ngelawan rasa takut lu, ngelawan rasa malas lu (dikit :v),
+          tapi lu berhasil, lu udah lolos di ptn impian lu sekarang. dan tentang semua yang lu katakan bahwa kalo kita udah berusaha
+          ya tinggal doa, hal yang sama yang dikatakan ummi ke gw, gw rasa itu ada benarnya.
+        </p>
+
+        <p>
+          lu lebih dewasa dari gw ra, lu dah bisa jaga diri juga, gw bangga beud punya temen kek lu. orang yang sedari dulu
+          ge jadiin panutan, gw jadiin motivasi bahwa kalo lu bisa sejauh itu maka gw harus bisa ngejar meski berbeda jalan.
+          ahh gw tau lu pasti males baca panjang2 begini. tapi yaa, gw mau ucapin banyak2 makasih ke lu ra. dan gw selalu ngedoain lu
+          dalam setiap solat2 gw. lu sahabat gw yang paling gw ga mau keilangan diri lu.., gw selalu doain yang terbaik buat lu ra,
+          dan semoga di ulang tahun lu yang ke 19 ini, apa yang lu impikan semoga tercapai (semoga dapet bts (meski mustahil dikit)).
+          lu juga jaga2 kesehatan ya raa, was jan keseringan make up ege, kasian kulit lu nohh jadi gatel2 kann, as i always said
+          "u r naturally pretty ra". dah sekian dari gw
+        </p>
+
+        <!-- Joygram birthday surprise -->
+        <p class="joygram-link">
+          <a
+            href="https://www.joygram.io/c/kak-rara-2026-8f3fnbuzp1ds"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            💌 One more little surprise for you ♡
+          </a>
+        </p>
+
+        <p class="signature">
+          your bestfriend,<br>
+          kei
+        </p>
+      </div>
+    </section>
+
+    <!-- SCENE 8: BIRTHDAY CAKE -->
+    <section class="scene-eight" id="scene8">
+      <div id="birthday-cake">
+        <div class="cake">
+          <div class="middle"></div>
+          <div class="chocs"></div>
+          <div class="top"></div>
+        </div>
+
+        <div class="candles">
+          <div class="flame"></div>
+          <div class="flame2"></div>
+          <div class="flame3"></div>
+          <div class="text">Happy Birthday!</div>
+          <div class="shadows"></div>
+        </div>
+
+        <p class="text2">*click on the flame to blow candles</p>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
