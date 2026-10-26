@@ -731,44 +731,151 @@ if (cake) {
 })();
 
 
-/* SLOW AUTO SCROLL: COUNTDOWN -> SCENE 2 */
+/* =========================================
+   AUTO SCROLL: COUNTDOWN → BLOOM → BIRTHDAY
+   Bisa di-interrupt dan scroll ke atas lagi
+========================================= */
 (() => {
   const story = document.querySelector("#story");
-  const countdown = document.querySelector(".countdown-scene");
 
-  if (!story || !countdown) return;
+  if (!story) {
+    console.error("Auto-scroll: #story tidak ditemukan.");
+    return;
+  }
 
-  window.setTimeout(() => {
-    const targetY =
-      story.getBoundingClientRect().top +
-      window.scrollY +
-      window.innerHeight;
+  const DELAY_BEFORE_SCROLL = 500;
+  const SCROLL_DURATION = 7000;
+  const TARGET_PROGRESS = 0.55;
 
-    const startY = window.scrollY;
-    const distance = targetY - startY;
-    const duration = 2500;
-    const startTime = performance.now();
+  let animationFrame = null;
+  let autoScrolling = false;
+  let userInterrupted = false;
+  let startPosition = 0;
+  let targetPosition = 0;
+  let startTime = 0;
+  let delayTimer = null;
 
-    function animateScroll(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+  function easeInOutCubic(t) {
+    return t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
 
-      // Ease-in-out: mulai dan berhenti secara perlahan
-      const easedProgress =
-        progress < 0.5
-          ? 4 * progress * progress * progress
-          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+  function stopAutoScroll() {
+    userInterrupted = true;
+    autoScrolling = false;
 
-      window.scrollTo(
-        0,
-        startY + distance * easedProgress
-      );
-
-      if (progress < 1) {
-        requestAnimationFrame(animateScroll);
-      }
+    if (animationFrame !== null) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
     }
 
-    requestAnimationFrame(animateScroll);
-  }, 1000);
+    if (delayTimer !== null) {
+      clearTimeout(delayTimer);
+      delayTimer = null;
+    }
+
+    removeInterruptListeners();
+  }
+
+  function interruptScroll(event) {
+    if (
+      event.type === "keydown" &&
+      ![
+        "ArrowDown",
+        "ArrowUp",
+        "PageDown",
+        "PageUp",
+        "Home",
+        "End",
+        " "
+      ].includes(event.key)
+    ) {
+      return;
+    }
+
+    stopAutoScroll();
+  }
+
+  function addInterruptListeners() {
+    window.addEventListener("wheel", interruptScroll, {
+      passive: true
+    });
+
+    window.addEventListener("touchstart", interruptScroll, {
+      passive: true
+    });
+
+    window.addEventListener("pointerdown", interruptScroll, {
+      passive: true
+    });
+
+    window.addEventListener("keydown", interruptScroll);
+  }
+
+  function removeInterruptListeners() {
+    window.removeEventListener("wheel", interruptScroll);
+    window.removeEventListener("touchstart", interruptScroll);
+    window.removeEventListener("pointerdown", interruptScroll);
+    window.removeEventListener("keydown", interruptScroll);
+  }
+
+  function animateScroll(timestamp) {
+    if (!autoScrolling || userInterrupted) return;
+
+    const elapsed = timestamp - startTime;
+    const progress = Math.min(elapsed / SCROLL_DURATION, 1);
+    const eased = easeInOutCubic(progress);
+
+    window.scrollTo(
+      0,
+      startPosition + (targetPosition - startPosition) * eased
+    );
+
+    if (progress < 1) {
+      animationFrame = requestAnimationFrame(animateScroll);
+    } else {
+      autoScrolling = false;
+      animationFrame = null;
+      removeInterruptListeners();
+    }
+  }
+
+  function startAutoScroll() {
+    if (userInterrupted || autoScrolling) return;
+
+    delayTimer = setTimeout(() => {
+      delayTimer = null;
+
+      if (userInterrupted) return;
+
+      const storyTop =
+        story.getBoundingClientRect().top + window.scrollY;
+
+      const scrollableDistance = Math.max(
+        1,
+        story.offsetHeight - window.innerHeight
+      );
+
+      startPosition = window.scrollY;
+      targetPosition =
+        storyTop + scrollableDistance * TARGET_PROGRESS;
+
+      if (targetPosition <= startPosition) return;
+
+      startTime = performance.now();
+      autoScrolling = true;
+
+      addInterruptListeners();
+      animationFrame = requestAnimationFrame(animateScroll);
+    }, DELAY_BEFORE_SCROLL);
+  }
+
+  if (document.readyState === "complete") {
+    startAutoScroll();
+  } else {
+    window.addEventListener("load", startAutoScroll, {
+      once: true
+    });
+  }
 })();
